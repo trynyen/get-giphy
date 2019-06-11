@@ -71,7 +71,7 @@
 
 
 // Wrap all jQuery in this function
-$( document ).ready(function() {
+$(document).ready(function() {
     var gifs = ["galaxy","beach"];
 
     // Get buttons in array to show up when page is loaded
@@ -99,16 +99,16 @@ $( document ).ready(function() {
             
     //When a gif is clicked, if the gif is still, it will animate and vice versa.
     $(document).on("click",".giphy",function(){
-                var state = $(this).attr("data-state");
-                if (state === "still"){
-                    $(this).attr("src", $(this).attr("data-animate"));
+        var state = $(this).attr("data-state");
+        if (state === "still"){
+            $(this).attr("src", $(this).attr("data-animate"));
                     $(this).attr("data-state", "animate");
-                }
-                else {
-                    $(this).attr("src", $(this).attr("data-still"));
-                    $(this).attr("data-state", "still");
-                }
-            })
+        }
+        else {
+            $(this).attr("src", $(this).attr("data-still"));
+            $(this).attr("data-state", "still");
+        }
+    })
     //when a gif button is clicked, it will render 10 gifs.
     $(document).on("click",".gif-button",function(){
         var gifButton = $(this).attr("data-name");
@@ -144,9 +144,7 @@ $( document ).ready(function() {
             gifDiv.append(image);
             //Add gif + rating to the top of page
             $("#gif-view").prepend(gifDiv);
-            }
-
-            
+            } 
         
         })
     })
