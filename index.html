@@ -22,10 +22,16 @@
         margin: 10px;
     }
 
+    .content {
+        display: block;
+        width: auto;
+        float:left;
+    }
     .giphy, p {
         display: block;
         position: relative;
         float: left;
+        text-align: center;
     }
     
     button {
@@ -51,7 +57,7 @@
 
         </div>
         <div class="row">
-            <div class="col-6">
+            <div class="col-12">
                 <div id="gif-view"></div>
         </div>
         </div>
@@ -103,6 +109,7 @@
         for (var i = 0; i < 10; i++){
             var result = response.data;
             var gifDiv = $("<div>");
+            gifDiv.addClass("content");
             var ratingDiv = $("<p>").text("Rating: " + result[i].rating);
             var imageUrl = result[i].images.original_still.url;
             var still = result[i].images.original_still.url;
@@ -120,23 +127,23 @@
             gifDiv.append(image);
             //Add gif + rating to the top of page
             $("#gif-view").prepend(gifDiv);
-        }
+            }
 
-        //When a gif is clicked, if the gif is still, it will animate and vice versa.
-        $(".giphy").click(function(){
-            var state = $(this).attr("data-state");
-            if (state === "still"){
-                $(this).attr("src", $(this).attr("data-animate"));
-                $(this).attr("data-state", "animate");
-            }
-            else {
-                $(this).attr("src", $(this).attr("data-still"));
-                $(this).attr("data-state", "still");
-            }
+            //When a gif is clicked, if the gif is still, it will animate and vice versa.
+            $(".giphy").click(function(){
+                var state = $(this).attr("data-state");
+                if (state === "still"){
+                    $(this).attr("src", $(this).attr("data-animate"));
+                    $(this).attr("data-state", "animate");
+                }
+                else {
+                    $(this).attr("src", $(this).attr("data-still"));
+                    $(this).attr("data-state", "still");
+                }
             })
         
         })
-        })
+    })
     })
 
   </script>
