@@ -9,7 +9,9 @@
   <style type="text/css">
     
     /**/
-
+    #container {
+        max-width: 960px;
+    }
     button, div,form, input {
       margin: 10px;
     }
@@ -20,6 +22,10 @@
         margin: 10px;
     }
 
+    #gif-view{
+        display: flex;
+    }
+
   </style>
 </head>
 
@@ -27,6 +33,7 @@
 
     <div id="container">
         <!--Buttons will show here-->
+        <div class="row">
         <div id="button-view"></div>
 
         <!--Search area-->
@@ -35,14 +42,23 @@
             <input type="text" id="gif-input"> <br>
             <button id="add-gif">GET GIPHY</button>
         </form>
-        <div id="gif-view"></div>
+
+        </div>
+        <div class="row">
+            <div class="col-12">
+                <div id="gif-view"></div>
+        </div>
+        </div>
+        
     </div>
 
     <!--Add jQuery library & javascript-->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
   <script type="text/javascript">
+
     var gifs = [];
 
+    // A button is created in button-view section.
     function renderButtons() {
         $("#button-view").empty();
         for (var i = 0; i < gifs.length; i++){
@@ -54,33 +70,55 @@
         }
     }
 
+    // When Add Gif button is clicked, button is rendered, 10 gifs are showing.
     $("#add-gif").click(function(event){
         event.preventDefault();
         var gif = $("#gif-input").val().trim();
         gifs.push(gif);
         renderButtons();
         
-    
+        // Add queryURL
         var queryURL = "https://api.giphy.com/v1/gifs/search?q=" + gif + "&api_key=tz9U9QpLHa5e7npNnDfiav5WpORSH9jO";
 
+        //Use ajax to get gifs from giphy API
         $.ajax({
         url: queryURL,
         method: "GET"
         }).then(function(response) {
         
-        
+        //Create loop to limit array to 10 gifs
         for (var i = 0; i < 10; i++){
         var result = response.data;
         var gifDiv = $("<div>");
-        var p = $("<p>").text("Rating: " + result[i].rating);
-        var imageUrl = result[i].images.original.url;
+        var ratingDiv = $("<div>").text("Rating: " + result[i].rating);
+        var imageUrl = result[i].images.original_still.url;
+        var still = result[i].images.original_still.url;
+        var animate = result[i].images.original.url;
         var image = $("<img>")
         image.attr("src", imageUrl);
+        image.attr("data-still", still);
+        image.attr("data-animate", animate);
+        image.attr("data-state", "still");
         image.attr("alt", gif + " gif");
-        gifDiv.append(p);
+        image.addClass("giphy");
+        //Add rating on top of gif
+        gifDiv.append(ratingDiv);
         gifDiv.append(image);
+        //Add gif + rating to the top of page
         $("#gif-view").prepend(gifDiv);
 
+        //When gif is clicked
+        $(".giphy").click(function(){
+            var state = $(this).attr("data-state");
+            if (state === "still"){
+            $(this).attr("src", $(this).attr("data-animate"));
+            $(this).attr("data-state", "animate");
+            }
+            else {
+            $(this).attr("src", $(this).attr("data-still"));
+            $(this).attr("data-state", "still");
+            }
+            })
         }
         });
     })
