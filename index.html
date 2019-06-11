@@ -72,7 +72,7 @@
 
 // Wrap all jQuery in this function
 $( document ).ready(function() {
-    var gifs = [];
+    var gifs = ["galaxy","beach"];
 
     // Get buttons in array to show up when page is loaded
     renderButtons();
@@ -95,11 +95,24 @@ $( document ).ready(function() {
         var gif = $("#gif-input").val().trim();
         gifs.push(gif);
         renderButtons();
-
+    })
+            
+    //When a gif is clicked, if the gif is still, it will animate and vice versa.
+    $(document).on("click",".giphy",function(){
+                var state = $(this).attr("data-state");
+                if (state === "still"){
+                    $(this).attr("src", $(this).attr("data-animate"));
+                    $(this).attr("data-state", "animate");
+                }
+                else {
+                    $(this).attr("src", $(this).attr("data-still"));
+                    $(this).attr("data-state", "still");
+                }
+            })
     //when a gif button is clicked, it will render 10 gifs.
-    $(".gif-button").click(function(){
+    $(document).on("click",".gif-button",function(){
         var gifButton = $(this).attr("data-name");
-
+                console.log(gifButton)
         // Add queryURL
         var queryURL = "https://api.giphy.com/v1/gifs/search?q=" + gifButton + "&api_key=tz9U9QpLHa5e7npNnDfiav5WpORSH9jO";
 
@@ -133,21 +146,9 @@ $( document ).ready(function() {
             $("#gif-view").prepend(gifDiv);
             }
 
-            //When a gif is clicked, if the gif is still, it will animate and vice versa.
-            $(".giphy").click(function(){
-                var state = $(this).attr("data-state");
-                if (state === "still"){
-                    $(this).attr("src", $(this).attr("data-animate"));
-                    $(this).attr("data-state", "animate");
-                }
-                else {
-                    $(this).attr("src", $(this).attr("data-still"));
-                    $(this).attr("data-state", "still");
-                }
-            })
+            
         
         })
-    })
     })
 
 });
