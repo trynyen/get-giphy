@@ -46,7 +46,7 @@
         <form action="">
             <label for="gif-input">Which gif is in your mind?</label><br>
             <input type="text" id="gif-input"> <br>
-            <button id="add-gif">GET GIPHY</button>
+            <button id="add-gif">ADD GIPHY</button>
         </form>
 
         </div>
@@ -72,24 +72,27 @@
         $("#button-view").empty();
         for (var i = 0; i < gifs.length; i++){
             var x = $("<button>");
-            x.addClass("gif");
+            x.addClass("gif-button");
             x.attr("data-name", gifs[i]);
             x.text(gifs[i]);
             $("#button-view").append(x);
         }
     }
 
-    // When Add Gif button is clicked, button is rendered, 10 gifs are showing.
+    // When Add Gif button is clicked, button is rendered.
     $("#add-gif").click(function(event){
         event.preventDefault();
         var gif = $("#gif-input").val().trim();
         gifs.push(gif);
         renderButtons();
 
-    $(".gif").click(function(){
+    //when a gif button is clicked, it will render 10 gifs.
+    $(".gif-button").click(function(){
         
+        var gifButton = $(this).attr("data-name");
+
         // Add queryURL
-        var queryURL = "https://api.giphy.com/v1/gifs/search?q=" + gif + "&api_key=tz9U9QpLHa5e7npNnDfiav5WpORSH9jO";
+        var queryURL = "https://api.giphy.com/v1/gifs/search?q=" + gifButton + "&api_key=tz9U9QpLHa5e7npNnDfiav5WpORSH9jO";
 
         //Use ajax to get gifs from giphy API
         $.ajax({
