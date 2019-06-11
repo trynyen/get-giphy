@@ -68,7 +68,11 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
   <script type="text/javascript">
 
-    var gifs = ["galaxy","beach"];
+
+
+// Wrap all jQuery in this function
+$( document ).ready(function() {
+    var gifs = [];
 
     // Get buttons in array to show up when page is loaded
     renderButtons();
@@ -119,7 +123,7 @@
             image.attr("data-still", still);
             image.attr("data-animate", animate);
             image.attr("data-state", "still");
-            image.attr("alt", gif + " gif");
+            image.attr("alt", gifButton + " gif");
             image.addClass("giphy");
 
             //Add rating on top of gif
@@ -145,6 +149,8 @@
         })
     })
     })
+
+});
 
   </script>
 
