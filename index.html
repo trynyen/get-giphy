@@ -23,7 +23,8 @@
     }
 
     #gif-view{
-        display: flex;
+        display: block;
+        float: left;
     }
 
   </style>
@@ -45,7 +46,7 @@
 
         </div>
         <div class="row">
-            <div class="col-12">
+            <div class="col-6">
                 <div id="gif-view"></div>
         </div>
         </div>
@@ -82,44 +83,45 @@
 
         //Use ajax to get gifs from giphy API
         $.ajax({
-        url: queryURL,
-        method: "GET"
+            url: queryURL,
+            method: "GET"
         }).then(function(response) {
         
         //Create loop to limit array to 10 gifs
         for (var i = 0; i < 10; i++){
-        var result = response.data;
-        var gifDiv = $("<div>");
-        var ratingDiv = $("<div>").text("Rating: " + result[i].rating);
-        var imageUrl = result[i].images.original_still.url;
-        var still = result[i].images.original_still.url;
-        var animate = result[i].images.original.url;
-        var image = $("<img>")
-        image.attr("src", imageUrl);
-        image.attr("data-still", still);
-        image.attr("data-animate", animate);
-        image.attr("data-state", "still");
-        image.attr("alt", gif + " gif");
-        image.addClass("giphy");
-        //Add rating on top of gif
-        gifDiv.append(ratingDiv);
-        gifDiv.append(image);
-        //Add gif + rating to the top of page
-        $("#gif-view").prepend(gifDiv);
+            var result = response.data;
+            var gifDiv = $("<div>");
+            var ratingDiv = $("<div>").text("Rating: " + result[i].rating);
+            var imageUrl = result[i].images.original_still.url;
+            var still = result[i].images.original_still.url;
+            var animate = result[i].images.original.url;
+            var image = $("<img>")
+            image.attr("src", imageUrl);
+            image.attr("data-still", still);
+            image.attr("data-animate", animate);
+            image.attr("data-state", "still");
+            image.attr("alt", gif + " gif");
+            image.addClass("giphy");
 
-        //When gif is clicked
+            //Add rating on top of gif
+            gifDiv.append(ratingDiv);
+            gifDiv.append(image);
+            //Add gif + rating to the top of page
+            $("#gif-view").prepend(gifDiv);
+        }
+
+        //When a gif is clicked, if the gif is still, it will animate and vice versa.
         $(".giphy").click(function(){
             var state = $(this).attr("data-state");
             if (state === "still"){
-            $(this).attr("src", $(this).attr("data-animate"));
-            $(this).attr("data-state", "animate");
+                $(this).attr("src", $(this).attr("data-animate"));
+                $(this).attr("data-state", "animate");
             }
             else {
-            $(this).attr("src", $(this).attr("data-still"));
-            $(this).attr("data-state", "still");
+                $(this).attr("src", $(this).attr("data-still"));
+                $(this).attr("data-state", "still");
             }
             })
-        }
         });
     })
 
