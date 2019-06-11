@@ -22,11 +22,16 @@
         margin: 10px;
     }
 
-    #gif-view{
+    .giphy, p {
         display: block;
+        position: relative;
         float: left;
     }
-
+    
+    button {
+        font-size: 15px;
+        font-weight: bold;
+    }
   </style>
 </head>
 
@@ -57,7 +62,10 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
   <script type="text/javascript">
 
-    var gifs = [];
+    var gifs = ["galaxy","beach"];
+
+    // Get buttons in array to show up when page is loaded
+    renderButtons();
 
     // A button is created in button-view section.
     function renderButtons() {
@@ -77,6 +85,8 @@
         var gif = $("#gif-input").val().trim();
         gifs.push(gif);
         renderButtons();
+
+    $(".gif").click(function(){
         
         // Add queryURL
         var queryURL = "https://api.giphy.com/v1/gifs/search?q=" + gif + "&api_key=tz9U9QpLHa5e7npNnDfiav5WpORSH9jO";
@@ -91,7 +101,7 @@
         for (var i = 0; i < 10; i++){
             var result = response.data;
             var gifDiv = $("<div>");
-            var ratingDiv = $("<div>").text("Rating: " + result[i].rating);
+            var ratingDiv = $("<p>").text("Rating: " + result[i].rating);
             var imageUrl = result[i].images.original_still.url;
             var still = result[i].images.original_still.url;
             var animate = result[i].images.original.url;
@@ -122,7 +132,9 @@
                 $(this).attr("data-state", "still");
             }
             })
-        });
+        
+        })
+        })
     })
 
   </script>
