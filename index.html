@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <title>Get Giphy</title>
+
+  <!--CSS styling section-->
+  <style type="text/css">
+    
+    /**/
+
+    button, div,form, input {
+      margin: 10px;
+    }
+
+    img {
+        width: 200px;
+        height: 200px;
+        margin: 10px;
+    }
+
+  </style>
+</head>
+
+<body>
+
+    <div id="container">
+        <!--Buttons will show here-->
+        <div id="button-view"></div>
+
+        <!--Search area-->
+        <form action="">
+            <label for="gif-input">Which gif is in your mind?</label><br>
+            <input type="text" id="gif-input"> <br>
+            <button id="add-gif">GET GIPHY</button>
+        </form>
+        <div id="gif-view"></div>
+    </div>
+
+    <!--Add jQuery library & javascript-->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+  <script type="text/javascript">
+    var gifs = [];
+
+    function renderButtons() {
+        $("#button-view").empty();
+        for (var i = 0; i < gifs.length; i++){
+            var x = $("<button>");
+            x.addClass("gif");
+            x.attr("data-name", gifs[i]);
+            x.text(gifs[i]);
+            $("#button-view").append(x);
+        }
+    }
+
+    $("#add-gif").click(function(event){
+        event.preventDefault();
+        var gif = $("#gif-input").val().trim();
+        gifs.push(gif);
+        renderButtons();
+        
+    
+        var queryURL = "https://api.giphy.com/v1/gifs/search?q=" + gif + "&api_key=tz9U9QpLHa5e7npNnDfiav5WpORSH9jO";
+
+        $.ajax({
+        url: queryURL,
+        method: "GET"
+        }).then(function(response) {
+        
+        
+        for (var i = 0; i < 10; i++){
+        var result = response.data;
+        var gifDiv = $("<div>");
+        var p = $("<p>").text("Rating: " + result[i].rating);
+        var imageUrl = result[i].images.original.url;
+        var image = $("<img>")
+        image.attr("src", imageUrl);
+        image.attr("alt", gif + " gif");
+        gifDiv.append(p);
+        gifDiv.append(image);
+        $("#gif-view").prepend(gifDiv);
+
+        }
+        });
+    })
+
+  </script>
+
+</body>
+
+</html>
